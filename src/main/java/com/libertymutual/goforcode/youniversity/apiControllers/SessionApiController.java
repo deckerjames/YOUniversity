@@ -43,7 +43,6 @@ public class SessionApiController {
     public Boolean login(@RequestBody Credentials credentials) {
         UserDetails details = userDetails.loadUserByUsername(credentials.getUsername());
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(details, credentials.password, details.getAuthorities());
-
         authenticator.authenticate(token);
 
         if (token.isAuthenticated()) {

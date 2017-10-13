@@ -16,6 +16,8 @@ import javax.persistence.Table;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import io.swagger.annotations.ApiModelProperty;
+
 @Entity
 @Table(name = "uni_user")
 public class User implements UserDetails {
@@ -41,6 +43,7 @@ public class User implements UserDetails {
     @OneToOne(cascade = CascadeType.ALL)
     private Preferences preferences;
 
+	@ApiModelProperty(hidden=true)
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<SchoolList> schoolList;
 
@@ -89,9 +92,9 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-    public void setUsername(String email) {
-        this.username = email;
-    }
+//    public void setUsername(String email) {
+//        this.username = email;
+//    }
 
     public Preferences getPreferences() {
         return preferences;

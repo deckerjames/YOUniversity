@@ -1,5 +1,6 @@
 package com.libertymutual.goforcode.youniversity.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -12,7 +13,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiModelProperty;
 
 @Entity
 @Table(name = "schoollist")
@@ -34,11 +35,18 @@ public class SchoolList {
     private String name;
 
     @ManyToOne
-    @JsonIgnore
     private User user;
 
-    @ManyToMany(mappedBy = "schoolList", cascade = CascadeType.ALL)
+    @ApiModelProperty(hidden = true)
+    @ManyToMany(cascade = CascadeType.ALL)
     private List<School> schools;
+
+    public void addSchool(School school) {
+        if (schools == null) {
+            schools = new ArrayList<School>();
+        }
+        schools.add(school);
+    }
 
     public Long getId() {
         return id;

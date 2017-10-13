@@ -2,6 +2,7 @@ package com.libertymutual.goforcode.youniversity.apiControllers;
 
 import java.util.List;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,9 +13,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.libertymutual.goforcode.youniversity.models.School;
 import com.libertymutual.goforcode.youniversity.models.SchoolList;
 import com.libertymutual.goforcode.youniversity.models.User;
 import com.libertymutual.goforcode.youniversity.repositories.SchoolListRepository;
+import com.libertymutual.goforcode.youniversity.repositories.SchoolRepository;
 import com.libertymutual.goforcode.youniversity.repositories.UserRepository;
 
 @RestController
@@ -22,11 +25,13 @@ import com.libertymutual.goforcode.youniversity.repositories.UserRepository;
 public class SchoolListController {
 
     private SchoolListRepository schoolListRepo;
+    private SchoolRepository schoolRepo;
     private UserRepository userRepo;
 
-    public SchoolListController(SchoolListRepository schoolListRepo, UserRepository userRepo) {
+    public SchoolListController(SchoolListRepository schoolListRepo, UserRepository userRepo, SchoolRepository schoolRepo) {
         this.schoolListRepo = schoolListRepo;
         this.userRepo = userRepo;
+        this.schoolRepo = schoolRepo;
 
     }
 
@@ -58,4 +63,23 @@ public class SchoolListController {
         return schoolListRepo.save(schoolList);
     }
 
+    @PostMapping("{listId}/add")
+    public SchoolList addSchoolToList(@PathVariable long listId, @RequestBody School school) {
+        SchoolList schoolList = schoolListRepo.findOne(listId);
+        schoolRepo.save(school);
+        schoolList.addSchool(school);
+        schoolListRepo.save(schoolList);
+        return schoolList;
+    }
+
+    @DeleteMapping("{listId}/delete/{schoolID}")
+    public School deleteSchoolFromList(@PathVariable long schoolId) {
+        try {
+            School school = schoolRepo.findOne(schoolId);
+            schoolRepo.delete(schoolId);
+            return school;
+        } catch (EmptyResultDataAccessException erdae) {
+            return null;
+        }
+    }
 }

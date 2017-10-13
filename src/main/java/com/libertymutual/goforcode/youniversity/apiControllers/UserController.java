@@ -1,4 +1,4 @@
-package com.libertymutual.goforcode.youniversity.controllers;
+package com.libertymutual.goforcode.youniversity.apiControllers;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
