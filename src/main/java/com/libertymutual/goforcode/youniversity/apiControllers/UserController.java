@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.libertymutual.goforcode.youniversity.models.SchoolList;
 import com.libertymutual.goforcode.youniversity.models.User;
+import com.libertymutual.goforcode.youniversity.models.UserUpdateInfoDto;
 import com.libertymutual.goforcode.youniversity.repositories.SchoolListRepository;
 import com.libertymutual.goforcode.youniversity.repositories.UserRepository;
 import io.swagger.annotations.ApiOperation;
@@ -43,13 +44,16 @@ public class UserController {
     @ApiParam(value = "User object", required = true)
     @PutMapping("")
 
-    public User updateUser(Authentication auth, @RequestBody User user) {
-
+    public User updateUser(Authentication auth, @RequestBody UserUpdateInfoDto user) {
     	User loggedInUser = (User) auth.getPrincipal();
-    	user.setId(loggedInUser.getId());
+      	User fromDb = userRepository.findOne(loggedInUser.getId());
+    	
+    	if (user.getFirstName() != null) fromDb.setFirstName(user.getFirstName());
+    	if (user.getLastName() != null) fromDb.setLastName(user.getLastName());
+    	if (user.getPreferences() != null) fromDb.setPreferences(user.getPreferences());
     	    	
-    	return userRepository.save(user);
-    }
+    	return userRepository.save(fromDb);
+    } 
 
     @ApiOperation(value = "Creates a user")
     @ApiParam(value = "User object", required = true)
