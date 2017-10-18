@@ -25,6 +25,7 @@ public class UserControllerTests {
     private SchoolListRepository schoolListRepo;
     private PasswordEncoder encoder;
     private Authentication auth;
+    private UserUpdateInfoDto userUpdateInfoDto;
 
     @Before
     public void setUp() {
