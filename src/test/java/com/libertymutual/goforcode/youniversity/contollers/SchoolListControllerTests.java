@@ -76,14 +76,15 @@ public class SchoolListControllerTests {
 			//arrange
 			SchoolList new1 = new SchoolList();
 			when(schoolListRepo.findOne(4L)).thenReturn(new1);
+			
 			School aSchool = new School();
 			
 			//act
 			SchoolList addList = controller.addSchoolToList(4L, aSchool);
 			
 			//assert
-//			verify(schoolListRepo).save(aSchool);
-//			verify(schoolListRepo).findOne(4L);
+			verify(schoolListRepo).save(addList);
+			verify(schoolListRepo).findOne(4L);
 		}
 		
 		

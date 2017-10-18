@@ -89,10 +89,6 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-    // public void setUsername(String email) {
-    // this.username = email;
-    // }
-
     public Preferences getPreferences() {
         return preferences;
     }
@@ -144,5 +140,4 @@ public class User implements UserDetails {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-
 }
