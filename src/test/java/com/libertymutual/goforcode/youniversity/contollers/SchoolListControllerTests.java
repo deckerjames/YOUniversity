@@ -78,7 +78,6 @@ public class SchoolListControllerTests {
 			when(schoolListRepo.findOne(4L)).thenReturn(new1);
 			School aSchool = new School();
 			
-			
 			//act
 			SchoolList addList = controller.addSchoolToList(4L, aSchool);
 			
