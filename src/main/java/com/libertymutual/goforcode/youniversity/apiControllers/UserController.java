@@ -17,7 +17,7 @@ import com.libertymutual.goforcode.youniversity.repositories.UserRepository;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
-@CrossOrigin(origins="*")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -25,7 +25,6 @@ public class UserController {
     private UserRepository userRepository;
     private PasswordEncoder encoder;
     private SchoolListRepository schoolListRepo;
-
 
     public UserController(UserRepository userRepository, PasswordEncoder encoder, SchoolListRepository schoolListRepo) {
         this.userRepository = userRepository;
@@ -38,24 +37,26 @@ public class UserController {
     public User getUser(Authentication auth) {
         User user = (User) auth.getPrincipal();
         String username = user.getUsername();
-        
+
         return userRepository.findByUsername(username);
     }
 
     @ApiOperation(value = "Updates a user")
     @ApiParam(value = "User object", required = true)
     @PutMapping("")
-
     public User updateUser(Authentication auth, @RequestBody UserUpdateInfoDto user) {
-    	User loggedInUser = (User) auth.getPrincipal();
-      	User fromDb = userRepository.findOne(loggedInUser.getId());
-    	
-    	if (user.getFirstName() != null) fromDb.setFirstName(user.getFirstName());
-    	if (user.getLastName() != null) fromDb.setLastName(user.getLastName());
-    	if (user.getPreferences() != null) fromDb.setPreferences(user.getPreferences());
-    	    	
-    	return userRepository.save(fromDb);
-    } 
+        User loggedInUser = (User) auth.getPrincipal();
+        User fromDb = userRepository.findOne(loggedInUser.getId());
+
+        if (user.getFirstName() != null)
+            fromDb.setFirstName(user.getFirstName());
+        if (user.getLastName() != null)
+            fromDb.setLastName(user.getLastName());
+        if (user.getPreferences() != null)
+            fromDb.setPreferences(user.getPreferences());
+
+        return userRepository.save(fromDb);
+    }
 
     @ApiOperation(value = "Creates a user")
     @ApiParam(value = "User object", required = true)
@@ -64,12 +65,12 @@ public class UserController {
         String password = user.getPassword();
         String encryptedPassword = encoder.encode(password);
         user.setPassword(encryptedPassword);
-        userRepository.save(user);        
+        userRepository.save(user);
         SchoolList schoolList = new SchoolList();
-        schoolList.setName("Favorites"); 
+        schoolList.setName("Favorites");
         user = userRepository.findOne(user.getId());
         schoolList.setUser(user);
-        schoolListRepo.save(schoolList);        
+        schoolListRepo.save(schoolList);
         user.setSchoolList(schoolList);
         userRepository.save(user);
         return user;
