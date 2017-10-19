@@ -57,7 +57,7 @@ public class SessionApiController {
         }
         return details;
 
-    }
+    } 
 
     @ApiOperation(value = "Logs-out current user")
     @DeleteMapping("/mine")
