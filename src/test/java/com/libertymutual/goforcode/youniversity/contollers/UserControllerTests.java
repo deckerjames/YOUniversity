@@ -86,7 +86,7 @@ public class UserControllerTests {
         assertThat(updatedUser.getPreferences().getMajor()).isEqualTo("someMajor");
         verify(auth).getPrincipal();
     }
-    
+
     @Test
     public void test_createUser_creates_new_user() {
         // Arrange
@@ -94,18 +94,18 @@ public class UserControllerTests {
         passedInUser.setPassword("password");
         passedInUser.setId(7L);
         when(userRepo.save(passedInUser)).thenReturn(passedInUser);
-        when(userRepo.findOne(7L)).thenReturn(passedInUser);        
+        when(userRepo.findOne(7L)).thenReturn(passedInUser);
 
-        SchoolList schoolList = new SchoolList();        
-        
+        SchoolList schoolList = new SchoolList();
+
         schoolList.setUser(passedInUser);
         when(schoolListRepo.save(schoolList)).thenReturn(schoolList);
 
-        passedInUser.setSchoolList(schoolList);        
-        
+        passedInUser.setSchoolList(schoolList);
+
         when(userRepo.save(passedInUser)).thenReturn(passedInUser);
 
-        // Act  
+        // Act
         User createdUser = controller.createUser(passedInUser);
 
         // Assert

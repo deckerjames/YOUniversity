@@ -56,7 +56,7 @@ public class UserController {
             fromDb.setPreferences(user.getPreferences());
 
         return userRepository.save(fromDb);
-    }  
+    }
 
     @ApiOperation(value = "Creates a user")
     @ApiParam(value = "User object", required = true)
@@ -65,11 +65,11 @@ public class UserController {
         String password = user.getPassword();
         String encryptedPassword = encoder.encode(password);
         user.setPassword(encryptedPassword);
-        userRepository.save(user);  
+        userRepository.save(user);
         SchoolList schoolList = new SchoolList();
-        schoolList.setName("Favorites");   
+        schoolList.setName("Favorites");
         user = userRepository.findOne(user.getId());
-        schoolList.setUser(user);  
+        schoolList.setUser(user);
         schoolListRepo.save(schoolList);
         user.setSchoolList(schoolList);
         userRepository.save(user);
