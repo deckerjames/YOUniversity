@@ -45,7 +45,10 @@ public class UserController {
     @ApiParam(value = "User object", required = true)
     @PutMapping("")
     public User updateUser(Authentication auth, @RequestBody UserUpdateInfoDto user) {
-        User loggedInUser = (User) auth.getPrincipal();
+    	User loggedInUser = (User) auth.getPrincipal();
+        
+//    	updateUserService.update(userId, user.getFirstName(), user.getLastName(), user.getPreferences());
+        
         User fromDb = userRepository.findOne(loggedInUser.getId());
 
         if (user.getFirstName() != null)
