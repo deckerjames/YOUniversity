@@ -6,6 +6,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -13,6 +16,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.libertymutual.goforcode.youniversity.apiControllers.UserController;
+import com.libertymutual.goforcode.youniversity.models.Preferences;
+import com.libertymutual.goforcode.youniversity.models.School;
+import com.libertymutual.goforcode.youniversity.models.SchoolList;
 import com.libertymutual.goforcode.youniversity.models.User;
 import com.libertymutual.goforcode.youniversity.models.UserUpdateInfoDto;
 import com.libertymutual.goforcode.youniversity.repositories.SchoolListRepository;
@@ -25,12 +31,15 @@ public class UserControllerTests {
     private SchoolListRepository schoolListRepo;
     private PasswordEncoder encoder;
     private Authentication auth;
-    private UserUpdateInfoDto userUpdateInfoDto;
+    private UserUpdateInfoDto changedUser;
+    private Preferences preferences;
 
     @Before
     public void setUp() {
         userRepo = mock(UserRepository.class);
         auth = mock(Authentication.class);
+        encoder = mock(PasswordEncoder.class);
+        schoolListRepo = mock(SchoolListRepository.class);
         controller = new UserController(userRepo, encoder, schoolListRepo);
     }
 
@@ -50,17 +59,56 @@ public class UserControllerTests {
     }
 
     @Test
-    public void test_updateUser_saves_updated_user_t_the_repo() {
+    public void test_updateUser_saves_updated_user() {
         // Arrange
         User loggedInUser = new User();
-        UserUpdateInfoDto passedInUser = new UserUpdateInfoDto();
+        loggedInUser.setId(2L);
         when(auth.getPrincipal()).thenReturn(loggedInUser);
-        loggedInUser.setId(7l);
-        
+        when(userRepo.findOne(2L)).thenReturn(loggedInUser);
+        when(userRepo.save(loggedInUser)).thenReturn(loggedInUser);
+
+        Preferences preferences = new Preferences();
+        preferences.setLocation("WA");
+        preferences.setMajor("someMajor");
+
+        UserUpdateInfoDto changedUser = new UserUpdateInfoDto();
+        changedUser.setFirstName("jonesy");
+        changedUser.setLastName("smith");
+        changedUser.setPreferences(preferences);
+
         // Act
-        User updatedUser = controller.updateUser(auth, passedInUser);
+        User updatedUser = controller.updateUser(auth, changedUser);
 
         // Assert
-        assertThat(updatedUser).isNotNull();
+        assertThat(updatedUser.getFirstName()).isEqualTo("jonesy");
+        assertThat(updatedUser.getLastName()).isEqualTo("smith");
+        assertThat(updatedUser.getPreferences().getLocation()).isEqualTo("WA");
+        assertThat(updatedUser.getPreferences().getMajor()).isEqualTo("someMajor");
+        verify(auth).getPrincipal();
+    }
+    
+    @Test
+    public void test_createUser_creates_new_user() {
+        // Arrange
+        User passedInUser = new User();
+        passedInUser.setPassword("password");
+        passedInUser.setId(7L);
+        when(userRepo.save(passedInUser)).thenReturn(passedInUser);
+        when(userRepo.findOne(7L)).thenReturn(passedInUser);        
+
+        SchoolList schoolList = new SchoolList();        
+        
+        schoolList.setUser(passedInUser);
+        when(schoolListRepo.save(schoolList)).thenReturn(schoolList);
+
+        passedInUser.setSchoolList(schoolList);        
+        
+        when(userRepo.save(passedInUser)).thenReturn(passedInUser);
+
+        // Act  
+        User createdUser = controller.createUser(passedInUser);
+
+        // Assert
+        assertThat(createdUser).isNotNull();
     }
 }
