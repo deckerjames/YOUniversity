@@ -66,7 +66,7 @@ public class SessionApiController {
         return true;
     }
 
-    static class Credentials {
+    public static class Credentials {
         private String username;
         private String password;
 
