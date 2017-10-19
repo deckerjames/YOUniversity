@@ -9,7 +9,9 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.core.Authentication;
+
 
 import com.libertymutual.goforcode.youniversity.apiControllers.SchoolListController;
 import com.libertymutual.goforcode.youniversity.models.School;
@@ -76,22 +78,59 @@ public class SchoolListControllerTests {
 			//arrange
 			SchoolList new1 = new SchoolList();
 			when(schoolListRepo.findOne(4L)).thenReturn(new1);
-			School aSchool = new School();
 			
+			School aSchool = new School();
 			
 			//act
 			SchoolList addList = controller.addSchoolToList(4L, aSchool);
 			
 			//assert
-//			verify(schoolListRepo).save(aSchool);
-//			verify(schoolListRepo).findOne(4L);
+			verify(schoolListRepo).save(addList);
+			verify(schoolListRepo).findOne(4L);
 		}
 		
 		
 		
 		@Test
 		public void delete_a_school_from_a_list() {
+			//arrange
+			SchoolList new1 = new SchoolList();
+			when(schoolListRepo.findOne(4L)).thenReturn(new1);
 			
+			School aSchool = new School();
+			when(schoolRepo.findOne(2L)).thenReturn(aSchool);
+			
+			new1.addSchool(aSchool);
+			aSchool.setId(2L);
+			
+			//act
+			School actualSchool = controller.deleteSchoolFromList(2L, 4L);
+			
+			//assert
+			verify(schoolListRepo).save(new1);
+			verify(schoolRepo).delete(2L);
+			assertThat(actualSchool).isEqualTo(aSchool);
 		}
-	
+		
+		@Test
+		public void receive_an_exception_when_attempting_to_delete_a_school_that_doesnt_exist() {
+			
+			//arrange
+			SchoolList new1 = new SchoolList();
+			when(schoolListRepo.findOne(4L)).thenReturn(new1);
+			when(schoolRepo.findOne(1L)).thenThrow(new EmptyResultDataAccessException(0));
+			
+			School aSchool = new School();
+			when(schoolRepo.findOne(2L)).thenReturn(aSchool);
+			
+			new1.addSchool(aSchool);
+			aSchool.setId(2L);
+			
+			//act
+			School actualSchool = controller.deleteSchoolFromList(1L, 4L);
+			
+			//assert
+			assertThat(actualSchool).isNull();
+			verify(schoolListRepo).findOne(4L);
+		}
 }
