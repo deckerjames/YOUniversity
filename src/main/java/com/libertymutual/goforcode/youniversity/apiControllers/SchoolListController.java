@@ -87,8 +87,8 @@ public class SchoolListController {
         schoolRepo.save(school);
         schoolList.addSchool(school);
         schoolListRepo.save(schoolList);
-        return schoolList;
-    }
+        return schoolList; 
+    } 
 
     @ApiOperation(value = "Deletes a school from a list")
     @ApiParam(value = "schoolId", required = true)
