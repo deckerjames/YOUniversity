@@ -3,12 +3,10 @@ package com.libertymutual.goforcode.youniversity.models;
 import org.junit.Test;
 import org.meanbean.test.BeanTester;
 
-public class SchoolTests {
+public class UserUpdateInfoDtoTests {
 
 	@Test
 	public void test_all_gets_and_sets() {
-		new BeanTester().testBean(School.class);
+		new BeanTester().testBean(UserUpdateInfoDto.class);
 	}
-
-
 }
