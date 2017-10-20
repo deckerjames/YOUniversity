@@ -25,5 +25,5 @@ public class YOUniversityUserDetailsService implements UserDetailsService {
         }
         return user;
     }
-
+  
 }
