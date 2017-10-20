@@ -5,12 +5,12 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 import org.meanbean.test.BeanTester;
 
-public class SchoolListTests {
+public class UserTests {
 
-	
 	@Test
 	public void test_all_gets_and_sets() {
-		new BeanTester().testBean(SchoolList.class);
+		new BeanTester().testBean(User.class);
 	}
+
 
 }
