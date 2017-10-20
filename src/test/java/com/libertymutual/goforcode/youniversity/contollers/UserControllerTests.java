@@ -24,6 +24,7 @@ import com.libertymutual.goforcode.youniversity.models.UserUpdateInfoDto;
 import com.libertymutual.goforcode.youniversity.repositories.SchoolListRepository;
 import com.libertymutual.goforcode.youniversity.repositories.UserRepository;
 import com.libertymutual.goforcode.youniversity.services.RegistrationService;
+import com.libertymutual.goforcode.youniversity.services.UpdateUserService;
 
 public class UserControllerTests {
 
@@ -32,6 +33,7 @@ public class UserControllerTests {
     private SchoolListRepository schoolListRepo;
     private Authentication auth;
     private RegistrationService registrationService;
+    private UpdateUserService updateUserService;
 
     @Before
     public void setUp() {
@@ -39,7 +41,8 @@ public class UserControllerTests {
         auth = mock(Authentication.class);
         schoolListRepo = mock(SchoolListRepository.class);
         registrationService = mock(RegistrationService.class);
-        controller = new UserController(userRepo, registrationService);
+        updateUserService = mock(UpdateUserService.class);
+        controller = new UserController(userRepo, registrationService, updateUserService);
     }
 
     @Test

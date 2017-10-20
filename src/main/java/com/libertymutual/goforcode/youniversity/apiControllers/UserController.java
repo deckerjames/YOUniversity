@@ -12,6 +12,7 @@ import com.libertymutual.goforcode.youniversity.models.User;
 import com.libertymutual.goforcode.youniversity.models.UserUpdateInfoDto;
 import com.libertymutual.goforcode.youniversity.repositories.UserRepository;
 import com.libertymutual.goforcode.youniversity.services.RegistrationService;
+import com.libertymutual.goforcode.youniversity.services.UpdateUserService;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -23,10 +24,12 @@ public class UserController {
 
     private UserRepository userRepository;
     private RegistrationService registrationService;
+    private UpdateUserService updateUserService;
 
-    public UserController(UserRepository userRepository, RegistrationService registrationService) {
+    public UserController(UserRepository userRepository, RegistrationService registrationService, UpdateUserService updateUserService) {
         this.userRepository = userRepository;
         this.registrationService = registrationService;
+        this.updateUserService = updateUserService;
     }
 
     @ApiOperation(value = "Returns user")
@@ -41,18 +44,7 @@ public class UserController {
     @ApiParam(value = "User object", required = true)
     @PutMapping("")
     public User updateUser(Authentication auth, @RequestBody UserUpdateInfoDto user) {
-        User loggedInUser = (User) auth.getPrincipal();
-
-        User fromDb = userRepository.findOne(loggedInUser.getId());
-
-        if (user.getFirstName() != null)
-            fromDb.setFirstName(user.getFirstName());
-        if (user.getLastName() != null)
-            fromDb.setLastName(user.getLastName());
-        if (user.getPreferences() != null)
-            fromDb.setPreferences(user.getPreferences());
-
-        return userRepository.save(fromDb);
+        return updateUserService.updateUser(auth, user);
     }
 
     @ApiOperation(value = "Creates a user")
