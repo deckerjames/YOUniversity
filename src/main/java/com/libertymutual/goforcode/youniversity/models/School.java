@@ -23,10 +23,11 @@ public class School {
 	public School() {
 	}
 
-	public School(Long schoolApiID, int rank, String schoolName, String schoolLocation, String state, double admission,
+	public School(Long schoolApiID, int rank, int size, String schoolName, String schoolLocation, String state, double admission,
 			String highestDegree, String schoolUrl, int inState, int outState, int avgNet, String comment) {
 		this.schoolApiId = schoolApiID;
 		this.rank = rank;
+		this.size = size;
 		this.schoolName = schoolName;
 		this.schoolLocation = schoolLocation;
 		this.state = state;
@@ -48,6 +49,9 @@ public class School {
 
 	@Column
 	private int rank;
+	
+	@Column
+	private int size;
 
 	@Column
 	private String schoolName;
@@ -193,6 +197,14 @@ public class School {
 
 	public void setRank(int rank) {
 		this.rank = rank;
+	}
+
+	public int getSize() {
+		return size;
+	}
+
+	public void setSize(int size) {
+		this.size = size;
 	}
 
 }
