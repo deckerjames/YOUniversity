@@ -1,6 +1,5 @@
 package com.libertymutual.goforcode.youniversity.models;
 
-import static org.junit.Assert.*;
 
 import org.junit.Test;
 import org.meanbean.test.BeanTester;
