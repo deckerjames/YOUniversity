@@ -50,7 +50,6 @@ public class UpdateUserServiceTests {
 		when(userRepository.save(loggedInUser)).thenReturn(loggedInUser);
 
 		// Act
-		// User actual = controller.updateUser(auth, changedUser);
 		User actual = updateUserService.updateUser(auth, changedUser);
 
 		// Assert
