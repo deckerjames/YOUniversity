@@ -16,48 +16,47 @@ import com.libertymutual.goforcode.youniversity.repositories.UserRepository;
 
 public class UpdateUserServiceTests {
 
-	private UserRepository userRepository;
-	private Authentication auth;
-	private UpdateUserService updateUserService;
+    private UserRepository userRepository;
+    private Authentication auth;
+    private UpdateUserService updateUserService;
 
-	@Before
-	public void setUp() {
-		userRepository = mock(UserRepository.class);
-		auth = mock(Authentication.class);
+    @Before
+    public void setUp() {
+        userRepository = mock(UserRepository.class);
+        auth = mock(Authentication.class);
 
-		updateUserService = new UpdateUserService(userRepository);
-	}
+        updateUserService = new UpdateUserService(userRepository);
+    }
 
-	@Test
-	public void test_updateUserService_saves_updated_user() {
-		// Arrange
-		User loggedInUser = new User();
-		loggedInUser.setId(2L);
-		loggedInUser.setFirstName("dan");
+    @Test
+    public void test_updateUserService_saves_updated_user() {
+        // Arrange
+        User loggedInUser = new User();
+        loggedInUser.setId(2L);
+        
+        Preferences preferences = new Preferences();
+        preferences.setLocation("WA");
+        preferences.setMajor("someMajor");
 
-		Preferences preferences = new Preferences();
-		preferences.setLocation("WA");
-		preferences.setMajor("someMajor");
+        UserUpdateInfoDto changedUser = new UserUpdateInfoDto();
+        changedUser.setFirstName("jonesy");
+        changedUser.setLastName("smith");
+        changedUser.setPreferences(preferences);
 
-		UserUpdateInfoDto changedUser = new UserUpdateInfoDto();
-		changedUser.setFirstName("jonesy");
-		changedUser.setLastName("smith");
-		changedUser.setPreferences(preferences);
+        when(auth.getPrincipal()).thenReturn(loggedInUser);
+        when(userRepository.findOne(2L)).thenReturn(loggedInUser);
 
-		when(auth.getPrincipal()).thenReturn(loggedInUser);
-		when(userRepository.findOne(2L)).thenReturn(loggedInUser);
+        when(userRepository.save(loggedInUser)).thenReturn(loggedInUser);
 
-		when(userRepository.save(loggedInUser)).thenReturn(loggedInUser);
+        // Act
+        User actual = updateUserService.updateUser(auth, changedUser);
 
-		// Act
-		User actual = updateUserService.updateUser(auth, changedUser);
-
-		// Assert
-		assertThat(actual.getFirstName()).isEqualTo("jonesy");
-		assertThat(actual.getLastName()).isEqualTo("smith");
-		assertThat(actual.getPreferences().getLocation()).isEqualTo("WA");
-		assertThat(actual.getPreferences().getMajor()).isEqualTo("someMajor");
-		verify(auth).getPrincipal();
-	}
+        // Assert
+        assertThat(actual.getFirstName()).isEqualTo("jonesy");
+        assertThat(actual.getLastName()).isEqualTo("smith");
+        assertThat(actual.getPreferences().getLocation()).isEqualTo("WA");
+        assertThat(actual.getPreferences().getMajor()).isEqualTo("someMajor");
+        verify(auth).getPrincipal();
+    }
 
 }

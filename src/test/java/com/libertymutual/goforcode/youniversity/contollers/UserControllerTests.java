@@ -66,7 +66,7 @@ public class UserControllerTests {
         User loggedInUser = new User();
         loggedInUser.setId(2L);
         loggedInUser.setFirstName("dan");
-        
+
         Preferences preferences = new Preferences();
         preferences.setLocation("WA");
         preferences.setMajor("someMajor");
@@ -85,9 +85,16 @@ public class UserControllerTests {
         
         when(userRepo.save(loggedInUser)).thenReturn(loggedInUser);
 
+        when(updateUserService.updateUser(auth, changedUser)).thenReturn(loggedInUser);
+
+        when(auth.getPrincipal()).thenReturn(loggedInUser);
+        when(userRepo.findOne(2L)).thenReturn(loggedInUser);
+        
+        when(userRepo.save(loggedInUser)).thenReturn(loggedInUser);
+
         // Act
         User actual = controller.updateUser(auth, changedUser);
- 
+
         // Assert
         assertThat(actual.getFirstName()).isEqualTo("jonesy");
         assertThat(actual.getLastName()).isEqualTo("smith");
