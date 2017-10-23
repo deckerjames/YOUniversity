@@ -35,7 +35,7 @@ public class UserControllerTests {
     private RegistrationService registrationService;
     private UpdateUserService updateUserService;
 
-    @Before
+    @Before  
     public void setUp() {
         userRepo = mock(UserRepository.class);
         auth = mock(Authentication.class);
@@ -75,6 +75,14 @@ public class UserControllerTests {
         changedUser.setFirstName("jonesy");
         changedUser.setLastName("smith");
         changedUser.setPreferences(preferences);
+        
+        when(updateUserService.updateUser(auth, changedUser)).thenReturn(loggedInUser);
+        
+        when(auth.getPrincipal()).thenReturn(loggedInUser);
+        when(userRepo.findOne(2L)).thenReturn(loggedInUser); 
+        
+        
+        when(userRepo.save(loggedInUser)).thenReturn(loggedInUser);
 
         when(updateUserService.updateUser(auth, changedUser)).thenReturn(loggedInUser);
 
@@ -93,7 +101,7 @@ public class UserControllerTests {
         assertThat(actual.getPreferences().getMajor()).isEqualTo("someMajor");
         verify(auth).getPrincipal();
     }
-
+ 
     @Test
     public void test_createUser_creates_new_user() {
         // Arrange
@@ -106,7 +114,7 @@ public class UserControllerTests {
 
         SchoolList schoolList = new SchoolList();
 
-        schoolList.setUser(passedInUser);
+        schoolList.setUser(passedInUser); 
         when(schoolListRepo.save(schoolList)).thenReturn(schoolList);
 
         passedInUser.setSchoolList(schoolList);
