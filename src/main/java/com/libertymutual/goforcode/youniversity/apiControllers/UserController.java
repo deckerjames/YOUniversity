@@ -44,7 +44,7 @@ public class UserController {
     @ApiParam(value = "User object", required = true)
     @PutMapping("")
     public User updateUser(Authentication auth, @RequestBody UserUpdateInfoDto user) {
-        return updateUserService.updateUser(auth, user);
+        return updateUserService.updateUser(auth, user); 
     }
 
     @ApiOperation(value = "Creates a user")
