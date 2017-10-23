@@ -58,4 +58,5 @@ public class UpdateUserServiceTests {
         assertThat(actual.getPreferences().getMajor()).isEqualTo("someMajor");
         verify(auth).getPrincipal();
     }
+
 }

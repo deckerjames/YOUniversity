@@ -74,6 +74,7 @@ public class UserControllerTests {
         UserUpdateInfoDto changedUser = new UserUpdateInfoDto();
         changedUser.setFirstName("jonesy");
         changedUser.setLastName("smith");
+
         changedUser.setPreferences(preferences);
         
         when(updateUserService.updateUser(auth, changedUser)).thenReturn(loggedInUser);
