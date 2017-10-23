@@ -11,7 +11,7 @@ import com.libertymutual.goforcode.youniversity.repositories.UserRepository;
 @Service
 public class UpdateUserService implements UpdateUserInterface {
 
-    private UserRepository userRepository;
+    UserRepository userRepository;
 
     public UpdateUserService(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -32,5 +32,6 @@ public class UpdateUserService implements UpdateUserInterface {
 
         return userRepository.save(fromDb);
     }  
+
 
 }
