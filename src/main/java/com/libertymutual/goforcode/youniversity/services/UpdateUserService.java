@@ -31,6 +31,6 @@ public class UpdateUserService implements UpdateUserInterface {
             fromDb.setPreferences(user.getPreferences());
 
         return userRepository.save(fromDb);
-    }
+    }  
 
 }

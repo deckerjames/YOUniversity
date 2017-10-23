@@ -53,4 +53,4 @@ public class UserController {
     public User createUser(@RequestBody User user) {
         return registrationService.createUser(user);
     }
-}
+}  
