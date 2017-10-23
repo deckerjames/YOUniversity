@@ -35,7 +35,7 @@ public class UserControllerTests {
     private RegistrationService registrationService;
     private UpdateUserService updateUserService;
 
-    @Before
+    @Before  
     public void setUp() {
         userRepo = mock(UserRepository.class);
         auth = mock(Authentication.class);
@@ -65,10 +65,8 @@ public class UserControllerTests {
         // Arrange
         User loggedInUser = new User();
         loggedInUser.setId(2L);
-        when(auth.getPrincipal()).thenReturn(loggedInUser);
-        when(userRepo.findOne(2L)).thenReturn(loggedInUser);
-        when(userRepo.save(loggedInUser)).thenReturn(loggedInUser);
-
+        loggedInUser.setFirstName("dan");
+        
         Preferences preferences = new Preferences();
         preferences.setLocation("WA");
         preferences.setMajor("someMajor");
@@ -77,18 +75,26 @@ public class UserControllerTests {
         changedUser.setFirstName("jonesy");
         changedUser.setLastName("smith");
         changedUser.setPreferences(preferences);
+        
+        when(updateUserService.updateUser(auth, changedUser)).thenReturn(loggedInUser);
+        
+        when(auth.getPrincipal()).thenReturn(loggedInUser);
+        when(userRepo.findOne(2L)).thenReturn(loggedInUser); 
+        
+        
+        when(userRepo.save(loggedInUser)).thenReturn(loggedInUser);
 
         // Act
-        User updatedUser = controller.updateUser(auth, changedUser);
-
+        User actual = controller.updateUser(auth, changedUser);
+ 
         // Assert
-        assertThat(updatedUser.getFirstName()).isEqualTo("jonesy");
-        assertThat(updatedUser.getLastName()).isEqualTo("smith");
-        assertThat(updatedUser.getPreferences().getLocation()).isEqualTo("WA");
-        assertThat(updatedUser.getPreferences().getMajor()).isEqualTo("someMajor");
+        assertThat(actual.getFirstName()).isEqualTo("jonesy");
+        assertThat(actual.getLastName()).isEqualTo("smith");
+        assertThat(actual.getPreferences().getLocation()).isEqualTo("WA");
+        assertThat(actual.getPreferences().getMajor()).isEqualTo("someMajor");
         verify(auth).getPrincipal();
     }
-
+ 
     @Test
     public void test_createUser_creates_new_user() {
         // Arrange
@@ -97,10 +103,11 @@ public class UserControllerTests {
         passedInUser.setId(7L);
         when(userRepo.save(passedInUser)).thenReturn(passedInUser);
         when(userRepo.findOne(7L)).thenReturn(passedInUser);
+        when(registrationService.createUser(passedInUser)).thenReturn(passedInUser);
 
         SchoolList schoolList = new SchoolList();
 
-        schoolList.setUser(passedInUser);
+        schoolList.setUser(passedInUser); 
         when(schoolListRepo.save(schoolList)).thenReturn(schoolList);
 
         passedInUser.setSchoolList(schoolList);
