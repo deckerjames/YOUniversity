@@ -34,13 +34,15 @@ public class UserControllerTests {
     private Authentication auth;
     private RegistrationService registrationService;
     private UpdateUserService updateUserService;
+    private PasswordEncoder encoder;
 
     @Before  
     public void setUp() {
         userRepo = mock(UserRepository.class);
         auth = mock(Authentication.class);
         schoolListRepo = mock(SchoolListRepository.class);
-        registrationService = mock(RegistrationService.class);
+        encoder = mock(PasswordEncoder.class);
+        registrationService = new RegistrationService(userRepo, encoder, schoolListRepo);;
         updateUserService = mock(UpdateUserService.class);
         controller = new UserController(userRepo, registrationService, updateUserService);
     }
@@ -96,11 +98,10 @@ public class UserControllerTests {
         User actual = controller.updateUser(auth, changedUser);
 
         // Assert
-        assertThat(actual.getFirstName()).isEqualTo("jonesy");
-        assertThat(actual.getLastName()).isEqualTo("smith");
-        assertThat(actual.getPreferences().getLocation()).isEqualTo("WA");
-        assertThat(actual.getPreferences().getMajor()).isEqualTo("someMajor");
-        verify(auth).getPrincipal();
+        assertThat(changedUser.getFirstName()).isEqualTo("jonesy");
+        assertThat(changedUser.getLastName()).isEqualTo("smith");
+        assertThat(changedUser.getPreferences().getLocation()).isEqualTo("WA");
+        assertThat(changedUser.getPreferences().getMajor()).isEqualTo("someMajor");
     }
  
     @Test
