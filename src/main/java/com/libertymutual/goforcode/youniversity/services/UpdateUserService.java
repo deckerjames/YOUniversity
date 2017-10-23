@@ -26,7 +26,7 @@ public class UpdateUserService implements UpdateUserInterface {
         if (user.getFirstName() != null)
             fromDb.setFirstName(user.getFirstName());
         if (user.getLastName() != null)
-            fromDb.setLastName(user.getLastName());
+            fromDb.setLastName(user.getLastName()); 
         if (user.getPreferences() != null)
             fromDb.setPreferences(user.getPreferences());
 
