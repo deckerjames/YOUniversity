@@ -1,13 +1,11 @@
 package com.libertymutual.goforcode.youniversity.services;
 
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.libertymutual.goforcode.youniversity.models.SchoolList;
 import com.libertymutual.goforcode.youniversity.models.User;
-import com.libertymutual.goforcode.youniversity.models.UserUpdateInfoDto;
 import com.libertymutual.goforcode.youniversity.repositories.SchoolListRepository;
 import com.libertymutual.goforcode.youniversity.repositories.UserRepository;
 
@@ -21,7 +19,7 @@ public class RegistrationService implements CreateUserInterface {
     public RegistrationService(UserRepository userRepository, PasswordEncoder encoder, SchoolListRepository schoolListRepo) {
         this.userRepository = userRepository;
         this.encoder = encoder;
-        this.schoolListRepo = schoolListRepo;
+        this.schoolListRepo = schoolListRepo; 
     }
 
     @Override
