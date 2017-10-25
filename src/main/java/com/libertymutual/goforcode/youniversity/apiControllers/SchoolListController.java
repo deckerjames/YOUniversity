@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -56,28 +55,6 @@ public class SchoolListController {
         schoolListRepo.delete(id);
         return schoolList;
     }
-
-    //deprecated...not needed because the client won't implement
-    //more than one list
-//    @ApiOperation(value = "Creates a list")
-//    @ApiParam(value = "SchoolList object", required = true)
-//    @PostMapping("create")
-//    public SchoolList createList(@RequestBody SchoolList schoolList, Authentication auth) {
-//        User user = (User) auth.getPrincipal();
-//        user = userRepo.findOne(user.getId());
-//        schoolList.setUser(user);
-//        return schoolListRepo.save(schoolList);
-//    }
-//    
-//    //deprecated...not needed because the client won't change list name
-//    //and won't have more than one list
-//    @ApiOperation(value = "Changes the name of the list")
-//    @ApiParam(value = "SchoolList object, schoolListId", required = true)
-//    @PutMapping("{id}")
-//    public SchoolList updateList(@RequestBody SchoolList schoolList, @PathVariable long id) {
-//        schoolList.setId(id);
-//        return schoolListRepo.save(schoolList);
-//    }
 
     @ApiOperation(value = "Adds a school to a list")
     @ApiParam(value = "schoolListId, School object", required = true)

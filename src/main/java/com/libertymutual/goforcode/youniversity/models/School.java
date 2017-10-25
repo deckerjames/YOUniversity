@@ -103,10 +103,6 @@ public class School {
 		this.schoolApiId = schoolApiId;
 	}
 
-	// public List<SchoolList> getSchoolList() {
-	// return schoolList;
-	// }
-
 	public void setSchoolList(List<SchoolList> schoolList) {
 		this.schoolList = schoolList;
 	}
